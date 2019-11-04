@@ -68,7 +68,7 @@ OBJS = scheme.$(Osuf) dynload.$(Osuf)
 LIBTARGET = $(LIBPREFIX)tinyscheme.$(SOsuf)
 STATICLIBTARGET = $(LIBPREFIX)tinyscheme.$(LIBsuf)
 
-all: $(LIBTARGET) $(STATICLIBTARGET) scheme$(EXE_EXT)
+all: $(LIBTARGET) $(STATICLIBTARGET) tinyscheme$(EXE_EXT)
 
 %.$(Osuf): %.c
 	$(CC) -I. -c $(DEBUG) $(FEATURES) $(DL_FLAGS) $<
@@ -76,7 +76,7 @@ all: $(LIBTARGET) $(STATICLIBTARGET) scheme$(EXE_EXT)
 $(LIBTARGET): $(OBJS)
 	$(LD) $(LDFLAGS) $(OUT) $(OBJS) $(SYS_LIBS)
 
-scheme$(EXE_EXT): $(OBJS)
+tinyscheme$(EXE_EXT): $(OBJS)
 	$(CC) -o $@ $(DEBUG) $(OBJS) $(SYS_LIBS)
 
 $(STATICLIBTARGET): $(OBJS)
@@ -86,7 +86,7 @@ $(OBJS): scheme.h scheme-private.h opdefines.h
 dynload.$(Osuf): dynload.h
 
 clean:
-	$(RM) $(OBJS) $(LIBTARGET) $(STATICLIBTARGET) scheme$(EXE_EXT)
+	$(RM) $(OBJS) $(LIBTARGET) $(STATICLIBTARGET) tinyscheme$(EXE_EXT)
 	$(RM) tinyscheme.ilk tinyscheme.map tinyscheme.pdb tinyscheme.exp
 	$(RM) scheme.ilk scheme.map scheme.pdb scheme.lib scheme.exp
 	$(RM) *~
