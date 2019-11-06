@@ -39,9 +39,6 @@
       (macro-expand-all (macro-expand form))
       form))
 
-(define *compile-hook* macro-expand-all)
-
-
 (macro (unless form)
      `(if (not ,(cadr form)) (begin ,@(cddr form))))
 
