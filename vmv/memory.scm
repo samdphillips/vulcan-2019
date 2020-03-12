@@ -11,14 +11,18 @@
 
 (macro assert
   (lambda (form)
-    `(begin
-      ,@(map (lambda (e) `(assert/1 ,e)) (cdr form)))))
+    (let ((tag (cadr form))
+          (the-asserts (cddr form)))
+      `(begin
+        ,@(map (lambda (e) `(assert/1 ,tag ,e)) the-asserts)))))
 
 (macro assert/1
   (lambda (form)
-    `(when assertions-enabled?
-       (unless ,(cadr form)
-         (error "assertion failed" ',(cadr form))))))
+    (let ((test (caddr form))
+          (tag  (cadr form)))
+      `(when assertions-enabled?
+         (unless ,test
+           (error "assertion failed" ,tag ',test))))))
 
 (define (displayln v)
   (display v) (newline))
@@ -44,11 +48,11 @@
        (eq? 'address (vector-ref a 0))))
 
 (define (address-ptr a)
-  (assert (address? a))
+  (assert 'address-ptr (address? addr))
   (vector-ref a 1))
 
 (define (set-address-ptr! a ptr)
-  (assert (address? a))
+  (assert 'set-address-ptr! (address? addr))
   (vector-set! a 1 ptr))
 
 ;; ##     ## ######## ##     ##  #######  ########  ##    ##
@@ -202,11 +206,11 @@
               'cons))))
 
 (define (v:car kons)
-  (assert (v:pair? kons))
+  (assert 'v:car (v:pair? kons))
   (memory-ref the-memory (+ 1 (address-ptr kons))))
 
 (define (v:cdr kons)
-  (assert (v:pair? kons))
+  (assert 'vcdr (v:pair? kons))
   (memory-ref the-memory (+ 2 (address-ptr kons))))
 
 (define (v:list . vs)
