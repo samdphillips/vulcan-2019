@@ -103,22 +103,27 @@
       (else
         (loop (- n 1) (cdr roots))))))
 
+(define (memory-cells memory)
+  (assert 'memory-cells
+          (vector? memory))
+  (vector-ref memory 2))
+
 (define (memory-size memory)
   (assert 'memory-size (vector? memory))
   (vector-length
-    (vector-ref memory 2)))
+    (memory-cells memory)))
 
 (define (memory-ref memory ptr)
   (assert 'memory-ref
           (vector? memory)
           (non-negative-integer? ptr))
-  (vector-ref (vector-ref memory 2) ptr))
+  (vector-ref (memory-cells memory) ptr))
 
 (define (memory-set! memory ptr val)
   (assert 'memory-set!
           (vector? memory)
           (non-negative-integer? ptr))
-  (vector-set! (vector-ref memory 2) ptr val))
+  (vector-set! (memory-cells memory) ptr val))
 
 (define (copy-memory-cells! old-memory new-memory)
   (let ((free-ptr (memory-free-ptr old-memory)))
